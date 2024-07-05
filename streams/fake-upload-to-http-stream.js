@@ -1,30 +1,30 @@
 import { Readable } from "node:stream";
 
 class OneToHundredStream extends Readable {
-  content = 1;
+  index = 1;
 
   _read() {
-    const i = this.content++;
+    const i = this.index++;
 
     setTimeout(() => {
-      if (i > 100) {
+      if (i > 5) {
         this.push(null);
       } else {
-        const buffer = Buffer.from(i.toString());
+        const buf = Buffer.from(String(i));
 
-        this.push(i);
+        this.push(buf);
       }
     }, 1000);
   }
 }
 
-fetch("http://localhost:3333", {
+fetch("http://localhost:3334", {
   method: "POST",
   body: new OneToHundredStream(),
 })
   .then((res) => {
     return res.text();
   })
-  .then((text) => {
-    console.log(text);
+  .then((data) => {
+    console.log(data);
   });
