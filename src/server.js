@@ -1,12 +1,15 @@
 import http from "node:http";
+import { json } from "./middlewares/json.js";
 
 // Padrão de importação "CommonJS" -> require
 // Padrão de importação "ESmodules" -> import -> "type": "module" no package.json
 
 const users = [];
 
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
   const { url, method } = req;
+
+  await json(req, res);
 
   if (method == "GET" && url == "/users") {
     return res
